@@ -1,0 +1,33 @@
+# .gitlab-ci.yml para Repositorio 1: api-spec
+
+stages:
+  - trigger
+
+# La variable $CI_COMMIT_BEFORE_SHA es el commit SHA antes de la fusión.
+# Si es un MR, apunta al HEAD de la rama de destino antes de la fusión.
+# Usamos 'rules' para asegurar que solo se dispare en merges a 'develop'
+# y que el archivo openapi.yaml haya sido modificado.
+trigger_ollama_pipeline:
+  stage: trigger
+  image: alpine/git:latest
+  rules:
+    # 1. Ejecutar solo en merges a la rama 'develop'.
+    - if: $CI_COMMIT_BRANCH == "develop"
+      changes:
+        - openapi.yaml # Solo si este archivo ha cambiado.
+      when: on_success
+    # 2. No ejecutar en otras ramas o tags.
+    - when: never
+
+  script:
+    - echo "Verificando si openapi.yaml fue modificado en la fusión a develop..."
+
+    # 3. Dispara un pipeline en el proyecto de Ollama (Repo 2)
+    # Reemplaza <ID_DEL_PROYECTO_OLLAMA> con el ID numérico del Repositorio 2.
+    # Reemplaza <TOKEN_TRIGGER> con un token de disparo de pipeline para el Repo 2.
+    - 'curl -X POST -F token=<TOKEN_TRIGGER> -F ref=main 
+      -F "variables[SPEC_PROJECT_ID]=$CI_PROJECT_ID" 
+      -F "variables[SPEC_COMMIT_SHA]=$CI_COMMIT_SHA" 
+      "https://${CI_SERVER_HOST}/api/v4/projects/<ID_DEL_PROYECTO_OLLAMA>/trigger/pipeline"'
+
+    - echo "Pipeline de Ollama disparado exitosamente."

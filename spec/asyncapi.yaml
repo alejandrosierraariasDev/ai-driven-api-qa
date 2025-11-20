@@ -1,0 +1,42 @@
+asyncapi: 3.0.0
+info:
+  title: Customer Events API
+  version: 1.0.0
+
+channels:
+  customer.created:
+    subscribe:
+      message:
+        $ref: '#/components/messages/customerEvent'
+  customer.updated:
+    subscribe:
+      message:
+        $ref: '#/components/messages/customerEvent'
+  customer.deleted:
+    subscribe:
+      message:
+        $ref: '#/components/messages/customerEvent'
+
+components:
+  messages:
+    customerEvent:
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/Customer'
+
+  schemas:
+    Customer:
+      type: object
+      required: [id, firstName, lastName, email]
+      properties:
+        id: { type: string }
+        firstName: { type: string }
+        lastName: { type: string }
+        email: { type: string }
+        phone: { type: string }
+        birthDate: { type: string }
+        country: { type: string }
+        status: { type: string, enum: [ACTIVE, INACTIVE, SUSPENDED] }
+        subscribedNewsletter: { type: boolean }
+        createdAt: { type: string }
+        updatedAt: { type: string }

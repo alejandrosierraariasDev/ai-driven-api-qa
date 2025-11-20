@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package customer;
+
+enum CustomerStatus {
+  ACTIVE = 0;
+  INACTIVE = 1;
+  SUSPENDED = 2;
+}
+
+message Customer {
+  string id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string email = 4;
+  string phone = 5;
+  string birthDate = 6;
+  string country = 7;
+  CustomerStatus status = 8;
+  bool subscribedNewsletter = 9;
+  string createdAt = 10;
+  string updatedAt = 11;
+}
+
+message CustomerId {
+  string id = 1;
+}
+
+message CustomerList {
+  repeated Customer customers = 1;
+}
+
+service CustomerService {
+  rpc ListCustomers(google.protobuf.Empty) returns (CustomerList);
+  rpc GetCustomer(CustomerId) returns (Customer);
+  rpc CreateCustomer(Customer) returns (Customer);
+  rpc UpdateCustomer(Customer) returns (Customer);
+  rpc DeleteCustomer(CustomerId) returns (google.protobuf.Empty);
+}

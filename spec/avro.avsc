@@ -1,0 +1,21 @@
+{
+  "type": "record",
+  "name": "Customer",
+  "namespace": "com.example",
+  "fields": [
+    { "name": "id", "type": ["null", "string"], "default": null },
+    { "name": "firstName", "type": "string" },
+    { "name": "lastName", "type": "string" },
+    { "name": "email", "type": "string" },
+    { "name": "phone", "type": ["null", "string"], "default": null },
+    { "name": "birthDate", "type": ["null", "string"], "default": null },
+    { "name": "country", "type": "string" },
+    {
+      "name": "status",
+      "type": { "type": "enum", "name": "Status", "symbols": ["ACTIVE", "INACTIVE", "SUSPENDED"] }
+    },
+    { "name": "subscribedNewsletter", "type": "boolean" },
+    { "name": "createdAt", "type": ["null", "string"], "default": null },
+    { "name": "updatedAt", "type": ["null", "string"], "default": null }
+  ]
+}

@@ -1,0 +1,55 @@
+⚠️ NO EXPLIQUES NADA. NO INTERPRETES LA ESPECIFICACIÓN.
+DEVUELVE SOLO CÓDIGO JAVA REST ASSURED LISTO PARA EJECUTAR.
+
+Eres un generador experto de tests automatizados para API REST utilizando Java + REST Assured.
+
+Tu tarea es generar una clase de test en Java basada en la siguiente información:
+
+📌 DEPENDENCIAS DISPONIBLES (usa solo estas librerías, nada externo):
+{{ REQS }}
+
+📌 ESPECIFICACIÓN DE LA API (usa esta estructura para conocer endpoints, paths, métodos HTTP, cuerpos, modelos y esquemas):
+{{ SPEC }}
+
+📌 REGLAS OBLIGATORIAS PARA EL CÓDIGO:
+
+- Crea una clase Java de test con métodos separados para cada operación detectada: GET, POST, PUT, PATCH y DELETE (si existen).
+- El POST debe ejecutarse primero para obtener un ID real. Ese ID debe reutilizarse para GET, PUT, PATCH y DELETE (flujo CRUD encadenado).
+- No uses IDs fijos ni inventados. Todo debe venir de respuestas de la API.
+- Cada test debe validar:
+  ✔ Código de estado HTTP correcto  
+  ✔ Content-Type JSON  
+  ✔ Campos mínimos del body siguiendo la especificación  
+- Incluye `.log().all()` como última línea en cada test.
+
+📌 FORMATO QUE DEBES COPIAR EXACTAMENTE:
+
+@Test
+public void testGetExample() {
+    RestAssured.baseURI = "URL";
+
+    given()
+        .when()
+            .get("/api/example/")
+        .then()
+            .statusCode(200)
+            .contentType(ContentType.JSON)
+            .body("field", equalTo("value"))
+            .log().all();
+}
+
+📌 ESTILO:
+
+- Comentarios mínimos y solo si son indicativos.
+- No generes explicaciones, resúmenes ni texto fuera del código Java.
+- No incluyas placeholders. Usa valores reales basados en la especificación.
+
+📌 OUTPUT ESPERADO:
+
+➡️ Un único archivo `.java` con:
+- Una clase de test
+- Uno o varios métodos de test (uno por endpoint)
+- CRUD completo si la API lo permite
+- Código compilable y ejecutable en un entorno con las dependencias de arriba.
+
+FIN DE INSTRUCCIONES

@@ -1,0 +1,51 @@
+enum Status {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+type Customer {
+  id: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String
+  birthDate: String
+  country: String!
+  status: Status
+  subscribedNewsletter: Boolean
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  customers: [Customer]
+  customer(id: ID!): Customer
+}
+
+type Mutation {
+  createCustomer(
+    firstName: String!
+    lastName: String!
+    email: String!
+    phone: String
+    birthDate: String
+    country: String!
+    status: Status
+    subscribedNewsletter: Boolean
+  ): Customer
+
+  updateCustomer(
+    id: ID!
+    firstName: String
+    lastName: String
+    email: String
+    phone: String
+    birthDate: String
+    country: String
+    status: Status
+    subscribedNewsletter: Boolean
+  ): Customer
+
+  deleteCustomer(id: ID!): Boolean
+}

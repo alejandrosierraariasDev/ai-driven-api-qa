@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Customer",
+  "type": "object",
+  "required": ["firstName", "lastName", "email", "country"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "firstName": { "type": "string" },
+    "lastName": { "type": "string" },
+    "email": { "type": "string", "format": "email" },
+    "phone": { "type": ["string", "null"] },
+    "birthDate": { "type": ["string", "null"], "format": "date" },
+    "country": { "type": "string" },
+    "status": { "type": "string", "enum": ["ACTIVE", "INACTIVE", "SUSPENDED"] },
+    "subscribedNewsletter": { "type": "boolean" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

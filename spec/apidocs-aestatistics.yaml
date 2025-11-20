@@ -1,0 +1,1245 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8082/ae-statistics",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/historicoDocumentosRMs": {
+      "get": {
+        "tags": [
+          "historico-documentos-rm-entity-controller"
+        ],
+        "description": "get-historicodocumentosrm",
+        "operationId": "getCollectionResource-historicodocumentosrm-get_1",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelEntityModelHistoricoDocumentosRM"
+                }
+              },
+              "application/x-spring-data-compact+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelEntityModelHistoricoDocumentosRM"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "historico-documentos-rm-entity-controller"
+        ],
+        "description": "create-historicodocumentosrm",
+        "operationId": "postCollectionResource-historicodocumentosrm-post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoricoDocumentosRMRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelHistoricoDocumentosRM"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/historicoDocumentosRMs/{id}": {
+      "get": {
+        "tags": [
+          "historico-documentos-rm-entity-controller"
+        ],
+        "description": "get-historicodocumentosrm",
+        "operationId": "getItemResource-historicodocumentosrm-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelHistoricoDocumentosRM"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "historico-documentos-rm-entity-controller"
+        ],
+        "description": "update-historicodocumentosrm",
+        "operationId": "putItemResource-historicodocumentosrm-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoricoDocumentosRMRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelHistoricoDocumentosRM"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelHistoricoDocumentosRM"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "historico-documentos-rm-entity-controller"
+        ],
+        "description": "delete-historicodocumentosrm",
+        "operationId": "deleteItemResource-historicodocumentosrm-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "historico-documentos-rm-entity-controller"
+        ],
+        "description": "patch-historicodocumentosrm",
+        "operationId": "patchItemResource-historicodocumentosrm-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoricoDocumentosRMRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelHistoricoDocumentosRM"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "tags": [
+          "profile-controller"
+        ],
+        "operationId": "listAllFormsOfMetadata_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile/historicoDocumentosRMs": {
+      "get": {
+        "tags": [
+          "profile-controller"
+        ],
+        "operationId": "descriptor_1_1_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/alps+json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/schema+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile/users": {
+      "get": {
+        "tags": [
+          "profile-controller"
+        ],
+        "operationId": "descriptor_1_1_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/alps+json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/schema+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "user-entity-controller"
+        ],
+        "description": "get-user",
+        "operationId": "getCollectionResource-user-get_1",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelEntityModelUser"
+                }
+              },
+              "application/x-spring-data-compact+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelEntityModelUser"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user-entity-controller"
+        ],
+        "description": "create-user",
+        "operationId": "postCollectionResource-user-post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/search/findActiveUserById": {
+      "get": {
+        "tags": [
+          "user-search-controller"
+        ],
+        "operationId": "executeSearch-user-get",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/search/findActiveUserByeMail": {
+      "get": {
+        "tags": [
+          "user-search-controller"
+        ],
+        "operationId": "executeSearch-user-get_1",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/search/findActiveUserByeMailAndPassword": {
+      "get": {
+        "tags": [
+          "user-search-controller"
+        ],
+        "operationId": "executeSearch-user-get_2",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pws",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/search/findByName": {
+      "get": {
+        "tags": [
+          "user-search-controller"
+        ],
+        "operationId": "executeSearch-user-get_3",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/search/findByeMail": {
+      "get": {
+        "tags": [
+          "user-search-controller"
+        ],
+        "operationId": "executeSearch-user-get_4",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/search/findLanguageByEmail": {
+      "get": {
+        "tags": [
+          "user-search-controller"
+        ],
+        "operationId": "executeSearch-user-get_5",
+        "parameters": [
+          {
+            "name": "userEmail",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "user-entity-controller"
+        ],
+        "description": "get-user",
+        "operationId": "getItemResource-user-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "user-entity-controller"
+        ],
+        "description": "update-user",
+        "operationId": "putItemResource-user-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user-entity-controller"
+        ],
+        "description": "delete-user",
+        "operationId": "deleteItemResource-user-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "user-entity-controller"
+        ],
+        "description": "patch-user",
+        "operationId": "patchItemResource-user-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/documentos/getInfoDocumentos": {
+      "get": {
+        "tags": [
+          "generic-actions-controller"
+        ],
+        "summary": "Obtener historial de acciones sobre documentos",
+        "description": "Retorna la información del historial de acciones realizadas sobre documentos",
+        "operationId": "getInfoDocumentos",
+        "responses": {
+          "404": {
+            "description": "No se encontraron documentos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HistoricoDocumentoDto"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HistoricoDocumentoDto"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Petición realizada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoricoDocumentoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AbstractJsonSchemaPropertyObject": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "readOnly": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Item": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AbstractJsonSchemaPropertyObject"
+            }
+          },
+          "requiredProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "JsonSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AbstractJsonSchemaPropertyObject"
+            }
+          },
+          "requiredProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "definitions": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Item"
+            }
+          },
+          "type": {
+            "type": "string"
+          },
+          "$schema": {
+            "type": "string"
+          }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
+        }
+      },
+      "RepresentationModelObject": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelUser": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mail": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "deleted": {
+            "type": "boolean"
+          },
+          "password": {
+            "type": "string"
+          },
+          "passwordActualized": {
+            "type": "string"
+          },
+          "skip": {
+            "type": "string"
+          },
+          "expiration": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numOfAttempts": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "desactivationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modificationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "desactivatedBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "changedBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "seeRecognition": {
+            "type": "boolean"
+          },
+          "hasSeenVitalyNextPopUp": {
+            "type": "boolean"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "PageMetadata": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PagedModelEntityModelUser": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "users": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "EntityModelHistoricoDocumentosRM": {
+        "type": "object",
+        "properties": {
+          "documento": {
+            "type": "string"
+          },
+          "usuario": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fechaAccion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "accion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "gdpr": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "PagedModelEntityModelHistoricoDocumentosRM": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "historicoDocumentosRMs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelHistoricoDocumentosRM"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "HistoricoDocumentosRMRequestBody": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "documento": {
+            "type": "string"
+          },
+          "usuario": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fechaAccion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "accion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "gdpr": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "UserRequestBody": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "language": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mail": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "deleted": {
+            "type": "boolean"
+          },
+          "password": {
+            "type": "string"
+          },
+          "passwordActualized": {
+            "type": "string"
+          },
+          "skip": {
+            "type": "string"
+          },
+          "expiration": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numOfAttempts": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "desactivationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modificationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "desactivatedBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "changedBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "seeRecognition": {
+            "type": "boolean"
+          },
+          "hasSeenVitalyNextPopUp": {
+            "type": "boolean"
+          }
+        }
+      },
+      "HistoricoDocumentoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "documento": {
+            "type": "string"
+          },
+          "usuario": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fechaAccion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "accion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "gdpr": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "hreflang": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "deprecation": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+# .gitlab-ci.yml para Repositorio 2: code-gen-pipeline
+
+stages:
+  - generate_and_propose
+
+# Usa una imagen que contenga Python, Git y curl
+# Puedes reemplazar 'python:3.10-slim' con tu imagen base con Ollama si es necesario.
+generate_and_propose_mr:
+  stage: generate_and_propose
+  image: python:3.10-slim
+
+  # Variables de entorno predefinidas por el trigger
+  # $SPEC_PROJECT_ID y $SPEC_COMMIT_SHA se pasan del Repo 1
+  variables:
+    # ⚠️ REEMPLAZAR: ID del Repositorio 3 (Target Code)
+    TARGET_PROJECT_ID: "12345678"
+    # Asegúrate de configurar CI_GITLAB_TOKEN como variable CI/CD secreta/protegida en este proyecto.
+    SPEC_REPO_URL: "https://${CI_SERVER_HOST}/${CI_PROJECT_NAMESPACE}/api-spec.git"
+
+  before_script:
+    - apt-get update && apt-get install -y git curl # Instalar herramientas necesarias
+    - pip install requests # Necesario para la API de GitLab
+    - git config --global http.postBuffer 524288000 # Buffer para operaciones grandes
+
+  script:
+    - echo "Iniciando generación de código para Spec ID $SPEC_PROJECT_ID en commit $SPEC_COMMIT_SHA"
+
+    # 1. Ejecutar el script Python que maneja todo el flujo
+    - python3 generate_and_propose.py
