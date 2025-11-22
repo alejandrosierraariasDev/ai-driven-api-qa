@@ -6,8 +6,7 @@ MODEL = 'llama3.2:1b'
 DIRECTORY = 'spec'
 FILE_NAME = 'openapi.yaml'
 FILE_PATH = os.path.join(DIRECTORY, FILE_NAME)
-REQUIREMENTS = 'requirements.txt'  # No se usa en esta función, pero se mantiene
-SPEC = 'openapi.yaml'  # No se usa en esta función, pero se mantiene
+
 PROMPT_DIRECTORY = 'prompt'
 PROMPT_CONTENT = 'prompt.txt'
 PROMPT_PATH = os.path.join(PROMPT_DIRECTORY, PROMPT_CONTENT)
@@ -33,7 +32,7 @@ def leer_y_preguntar(spec_file_path, prompt_file_path, model_name):
         print(f"Error: No se encontró el archivo de especificación '{spec_file_path}'.")
         return
 
-    # 2. Leer el contenido del archivo de PROMPT (Scaffolding)
+    # 2. Leer el contenido del archivo de PROMPT
     try:
         with open(prompt_file_path, 'r', encoding='utf-8') as f:
             instruccion = f.read()

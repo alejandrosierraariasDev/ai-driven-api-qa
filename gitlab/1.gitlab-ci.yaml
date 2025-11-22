@@ -1,33 +1,100 @@
-# .gitlab-ci.yml para Repositorio 1: api-spec
+"""
+✅ Pipeline .gitlab-ci.yml del Repo 1 → api_spec
+Valide la OpenAPI
+
+Bloquee si está mal
+
+Y solo si está bien, dispare el pipeline del repo 2 (IA_Code).
+
+Ejecuta cuando se modifique el archivo OpenAPI (openapi.yaml) y haya un merge en dev, y lanza el pipeline en repo 2.
+
+Tools enforcement policy:
+- API validation: Spectral 
+- Backend development: Python
+- Tests: Python + PyTest
+
+"""
+
 
 stages:
+  - validate
   - trigger
 
-# La variable $CI_COMMIT_BEFORE_SHA es el commit SHA antes de la fusión.
-# Si es un MR, apunta al HEAD de la rama de destino antes de la fusión.
-# Usamos 'rules' para asegurar que solo se dispare en merges a 'develop'
-# y que el archivo openapi.yaml haya sido modificado.
-trigger_ollama_pipeline:
-  stage: trigger
-  image: alpine/git:latest
+variables:
+  SPEC_FILE: "spec/openapi.yaml"
+  SPECTRAL_FILE: ".spectral.yaml"
+
+validate_openapi:
+  stage: validate
+  image: node:18
   rules:
-    # 1. Ejecutar solo en merges a la rama 'develop'.
-    - if: $CI_COMMIT_BRANCH == "develop"
-      changes:
-        - openapi.yaml # Solo si este archivo ha cambiado.
-      when: on_success
-    # 2. No ejecutar en otras ramas o tags.
-    - when: never
-
+    - changes:
+        - spec/openapi.yaml
+      if: '$CI_COMMIT_BRANCH == "dev"'
   script:
-    - echo "Verificando si openapi.yaml fue modificado en la fusión a develop..."
+    - npm install -g @stoplight/spectral-cli swagger-cli
 
-    # 3. Dispara un pipeline en el proyecto de Ollama (Repo 2)
-    # Reemplaza <ID_DEL_PROYECTO_OLLAMA> con el ID numérico del Repositorio 2.
-    # Reemplaza <TOKEN_TRIGGER> con un token de disparo de pipeline para el Repo 2.
-    - 'curl -X POST -F token=<TOKEN_TRIGGER> -F ref=main 
-      -F "variables[SPEC_PROJECT_ID]=$CI_PROJECT_ID" 
-      -F "variables[SPEC_COMMIT_SHA]=$CI_COMMIT_SHA" 
-      "https://${CI_SERVER_HOST}/api/v4/projects/<ID_DEL_PROYECTO_OLLAMA>/trigger/pipeline"'
+    # 1) validar sintaxis
+    - echo "📌 Validando sintaxis OpenAPI..."
+    - swagger-cli validate $SPEC_FILE
 
-    - echo "Pipeline de Ollama disparado exitosamente."
+    # 2) Crear Spectral config si NO existe
+    - |
+      if [ ! -f "$SPECTRAL_FILE" ]; then
+        echo "⚠️ No existe .spectral.yaml — Creando archivo por defecto..."
+        cat << 'EOF' > $SPECTRAL_FILE
+extends: "spectral:oas"
+
+rules:
+  operation-description:
+    description: "Endpoints must include a description."
+    severity: error
+    given: "$.paths[*][*]"
+    then:
+      field: description
+      function: truthy
+
+  schema-must-have-type:
+    description: "Every property must define a 'type'."
+    severity: error
+    given: "$.components.schemas.*.properties.*"
+    then:
+      field: type
+      function: truthy
+
+  required-fields:
+    description: "Schemas with properties should define 'required'."
+    severity: warn
+    given: "$.components.schemas.*"
+    then:
+      field: required
+      function: truthy
+
+  example-required:
+    description: "Properties should include example values."
+    severity: warn
+    given: "$.components.schemas.*.properties.*"
+    then:
+      field: example
+      function: truthy
+EOF
+      fi
+
+    # 3) Validación de calidad con Spectral
+    - echo "🔍 Validando calidad OpenAPI con Spectral..."
+    - spectral lint $SPEC_FILE --ruleset $SPECTRAL_FILE --fail-severity "warn"
+
+  allow_failure: false
+
+
+trigger_ai_pipeline:
+  stage: trigger
+  needs: [validate_openapi]
+  rules:
+    - changes:
+        - spec/openapi.yaml
+      if: '$CI_COMMIT_BRANCH == "dev"'
+  trigger:
+    project: "sngular-solutions/qe/IA_Code"
+    branch: "master"
+    strategy: depend

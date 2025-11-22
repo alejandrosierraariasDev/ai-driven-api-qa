@@ -1,0 +1,157 @@
+# 🐍 Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# 📦 Virtual Environments
+venv/
+ENV/
+env/
+.venv
+env.bak/
+venv.bak/
+
+# 🔧 IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+.vim/
+.emacs.d/
+
+# 🧪 Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.hypothesis/
+*.cover
+.pytest_cache/
+coverage.xml
+*.lcov
+
+# 📝 Logs
+*.log
+logs/
+*.log.*
+
+# 🔐 Environment Variables
+.env
+.env.local
+.env.*.local
+.env.production.local
+
+# 🎯 Project Specific
+output/
+*.yaml.bak
+*.yml.bak
+temp/
+tmp/
+.spectral.yaml.bak
+
+# 🤖 Ollama & LLM
+ollama_cache/
+model_cache/
+*.bin
+*.safetensors
+
+# 📦 Node (para Spectral/swagger-cli si se instala localmente)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# 🔄 Git
+.git/
+.gitmodules
+
+# 🖥️ OS Specific
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# 💾 Backup Files
+*.bak
+*.backup
+*.tmp
+*.swp
+*~
+
+# 📊 IDE Metadata
+.vscode/settings.json
+.vscode/launch.json
+.idea/workspace.xml
+.idea/tasks.xml
+
+# 🔗 Symbolic Links (if any)
+link
+
+# 📁 Temporary Directories
+.cache/
+.temp/
+temp_*
+
+# 🐳 Docker (if used)
+.dockerignore
+docker-compose.override.yml
+
+# 📋 CI/CD Artifacts (local testing)
+ci_artifacts/
+pipeline_logs/
+
+# 🔒 Secrets (double safety)
+secrets/
+*.key
+*.pem
+*.p12
+*.pfx
+credentials.json
+config.secret.json
+
+# 📤 Generated Files (keep only in CI/CD)
+/output/*.java
+/output/*.json
+!/output/.gitkeep
+
+# 🎨 IDE Generated
+.idea/
+*.iml
+*.iws
+*.ipr
+.gradle/
+build/
+
+# 🌐 Network/API
+.vscode-server/
+remote-pdb.set_trace
