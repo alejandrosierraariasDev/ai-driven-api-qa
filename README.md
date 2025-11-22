@@ -33,42 +33,42 @@ Este repositorio forma parte de un flujo automatizado entre tres repositorios qu
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                           │
-│  Repo #1: api_spec                                                       │
+│                                                                         │
+│  Repo #1: api_spec                                                      │
 │  └─ spec/openapi.yaml (modificado en branch: dev)                       │
-│                                                                           │
+│                                                                         │
 └────────────────────────┬────────────────────────────────────────────────┘
                          │ Merge a dev
                          ⬇
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                           │
+│                                                                         │
 │  Pipeline 1 (Repo #1) - VALIDACIÓN EXHAUSTIVA                           │
 │  ├─ ✅ validate_openapi (swagger-cli + Spectral)                        │
 │  │  ├─ Validación sintáctica                                            │
 │  │  └─ Validación de calidad (reglas custom)                            │
-│  │                                                                        │
+│  │                                                                      │
 │  └─ 🚀 trigger_ai_pipeline (si validación OK)                           │
-│                                                                           │
+│                                                                         │
 └────────────────────────┬────────────────────────────────────────────────┘
                          │ Trigger (solo si pasa validación)
                          ⬇
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                           │
+│                                                                         │
 │  Repo #2: IA_Code (Este repositorio)                                    │
 │  ├─ main.py (ejecuta Ollama)                                            │
 │  ├─ spec/openapi.yaml (input validado)                                  │
 │  ├─ prompt/prompt.txt (instrucciones IA)                                │
 │  └─ output/chat_output.py (artefacto generado)                          │
-│                                                                           │
+│                                                                         │
 └────────────────────────┬────────────────────────────────────────────────┘
                          │ Pipeline 2
                          ⬇
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                           │
-│  Repo #3: QADev_code                                                     │
+│                                                                         │
+│  Repo #3: QADev_code                                                    │
 │  └─ Recibe MR automática con output generado                            │
 │     Branch: feature-ai-update-yyyymmddHHMM → dev                        │
-│                                                                           │
+│                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -135,7 +135,6 @@ IA_Code/
 ├── 📄 requirements.txt             # Dependencias Python
 ├── 📄 main.py                      # Script principal de ejecución
 ├── 📄 .gitlab-ci.yml               # Pipeline CI/CD
-├── 📄 .spectral.yaml               # Reglas de validación OpenAPI
 │
 ├── 📁 spec/
 │   └── openapi.yaml                # Input: Especificación API (desde Repo #1)
@@ -159,8 +158,7 @@ IA_Code/
 | **spec/openapi.yaml** | Especificación OpenAPI que recibe desde Repo #1 |
 | **prompt/prompt.txt** | Plantilla de instrucciones para la IA (define qué generar) |
 | **output/chat_output.py** | Artefacto generado automáticamente (se envía a Repo #3) |
-| **.gitlab-ci.yml** | Pipeline que ejecuta main.py y crea MR en Repo #3 |
-| **.spectral.yaml** | Reglas de validación de calidad OpenAPI (generadas automáticamente si no existen) |
+| **.gitlab-ci.yml** | Pipeline que ejecuta main.py y crea MR en Repo #3 | |
 
 ---
 
