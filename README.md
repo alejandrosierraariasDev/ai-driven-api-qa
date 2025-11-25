@@ -1,4 +1,4 @@
-# 🤖 IA driven API QA
+# 🤖 AI driven API QA
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Ollama](https://img.shields.io/badge/Ollama-LLM-orange?logo=openai&logoColor=white)](https://ollama.ai/)
