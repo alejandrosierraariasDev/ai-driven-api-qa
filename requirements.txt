@@ -1,7 +1,5 @@
 requests
 ollama
 pytest
-fastapi
-pydantic
-requests-toolbelt
-jsonschema
+json
+

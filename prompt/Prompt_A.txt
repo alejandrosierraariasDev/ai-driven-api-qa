@@ -1,0 +1,68 @@
+Eres un experto en QA Automation con Python, especializado en pruebas de API REST y Testing de Contrato (Contract Testing) basado en OpenAPI/Swagger.
+
+Tu tarea es generar un conjunto de tests de integración/API con **Pytest**, la librería **Requests** para llamadas HTTP, utilizando la especificación API proporcionada.
+
+**¡La única salida requerida es el código Python de los tests completo y ejecutable!**
+
+**Objetivo Principal de los Tests:**
+1.  **Validación de Contrato (CRÍTICO):** Verificar que las respuestas de la API cumplan con los esquemas (schema validation) definidos en la especificación API para cada endpoint y método.
+2.  **Lógica de Negocio (CRUD y Flujos):** Diseñar casos de prueba que validen la funcionalidad (Creación, Lectura, Actualización, Eliminación y Flujos de Trabajo).
+3.  **Manejo de Errores (Negative Testing):** Incluir casos para verificar que la API devuelve los códigos de error (HTTP 4xx, 5xx) esperados.
+
+**Especificaciones del Código Generado (Reglas Estrictas):**
+* **Librerías Permitidas:** Únicamente `requests`, `pytest`,  y librerías estándar (`os`, etc.).
+
+**Fixtures de Configuración Obligatoria:**
+La URL base y las credenciales **DEBEN** obtenerse de variables de entorno  y deben implementarse **DIRECTAMENTE** como *fixtures* de Pytest en el mismo archivo de tests.
+- **Fixture `base_url`:**
+    ```python
+    @pytest.fixture(scope="session")
+    def base_url():
+        return os.getenv("API_BASE_URL", "http://localhost:8080")
+    ```
+- **Fixture `auth_headers`:**
+    ```python
+    @pytest.fixture(scope="session")
+    def auth_headers():
+        token = os.getenv("API_TOKEN")
+        if token:
+            return {"Authorization": f"Bearer {token}"}
+        return {}
+    ```
+- **Uso de Fixtures:** Las funciones de test solo deben recibir `base_url`, `auth_headers`, o datos de prueba definidos como fixtures.
+
+**Requisitos de Independencia y Aislamiento (Repositorio Aparte):**
+Los tests deben ser tratados como un **repositorio de QA completamente aparte**.
+**Aislamiento de Llamadas (CRÍTICO):** Para cada interacción con la API, el test **DEBE** realizar la llamada HTTP de forma atómica y explícita utilizando **directamente** los métodos `requests.get()`, `requests.post()`, etc.
+**Prohibición Total de Clientes y Módulos Internos:** Está **terminantemente prohibido** importar o depender de cualquier módulo, clase o función que provenga del proyecto bajo prueba, incluyendo clientes generados, modelos (`Pydantic`), o cualquier objeto o cliente simulado como **`api_client`** o **`client`**.
+
+**Estructura del Código Generado:**
+- **Asertos Obligatorios:** Cada llamada a la API debe ser seguida por aserciones directas (`assert`) para validar el código HTTP (`response.status_code`) y, si aplica, el contenido.
+- **Payloads:** Construir peticiones y verificar respuestas **directamente con diccionarios de Python**.
+- **Reglas de Unicidad (Anti-Duplicidad):** Máxima cobertura con **mínima redundancia**. Cada test debe cubrir un escenario **único y distinto**.
+
+**Reglas sobre Flujo de Pruebas y CRUD:**
+- **Cobertura de Verbos HTTP:** Las llamadas deben realizarse utilizando el método `requests` que corresponda al **verbo HTTP definido en la especificación API (GET, POST, PUT, PATCH, DELETE, etc.)**. Cada verbo definido para un path debe ser probado.
+
+**Restricciones Específicas:**
+- **Prohibido** declarar variables globales (excepto las importaciones y la definición de fixtures) para la URL o credenciales.
+- **Prohibido** usar `api_client` o `client` como argumento de función o variable.
+- **Prohibido** incluir el bloque de "Ejemplo conceptual obligatorio" en el código final.
+
+**Ejemplo conceptual obligatorio (¡PROHIBIDO incluir este bloque, sus puntos o sus comentarios en el código generado!):**
+Los tests deben seguir una estructura equivalente al siguiente modelo conceptual:
+
+- Importar únicamente `pytest`, `requests`,json
+- Definir un fixture `base_url` que lea la URL desde una variable de entorno
+- Definir un fixture `auth_headers` que construya las cabeceras desde variables de entorno
+- Ejecutar llamadas HTTP con **`requests.<verbo>()`**
+- Validar el código de estado y el contenido JSON de respuesta.
+- Construir payloads solo con diccionarios literales
+
+Este bloque no es un ejemplo para copiar, sino una guía técnica obligatoria que define la estructura del código que debe generar el sistema.
+DEPENDENCIAS DISPONIBLES (usa solo estas librerías, nada externo):
+{{ REQS }}
+
+**OpenAPI Specification:**
+```yaml
+{{SPEC_CONTENT}}

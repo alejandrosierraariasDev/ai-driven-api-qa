@@ -14,6 +14,9 @@ Este repositorio forma parte de un flujo automatizado entre tres repositorios qu
 
 ## 📋 Tabla de Contenidos
 
+- [Requisitos Previos](#-requisitos-previos)
+- [Instalación](#-instalación)
+
 - [Arquitectura](#-arquitectura)
 - [¿Cuándo se ejecuta?](#-cuándo-se-ejecuta-este-sistema)
 - [Estructura del Repositorio](#-contenido-del-repositorio)
@@ -28,6 +31,38 @@ Este repositorio forma parte de un flujo automatizado entre tres repositorios qu
 - [Roadmap](#-roadmap-futuro)
 
 ---
+
+## 🔧 Requisitos Previos
+
+Antes de comenzar, asegúrate de tener instalado:
+
+- [Python 3.9+](https://www.python.org/downloads/)
+- [Git](https://git-scm.com/)
+- [Ollama](https://ollama.ai/) (sigue las instrucciones de instalación para tu sistema operativo)
+
+## 📥 Instalación de Ollama y Configuración del Modelo
+
+1. **Instalar Ollama**
+   - Descarga e instala Ollama desde [ollama.ai](https://ollama.ai/)
+   - Sigue las instrucciones de instalación para tu sistema operativo
+
+2. **Iniciar el servidor de Ollama**
+   ```bash
+   # En una terminal, inicia el servidor de Ollama
+   ollama serve
+   ```
+
+3. **Descargar el modelo de lenguaje**
+   ```bash
+   # En otra terminal, descarga el modelo (puede tardar varios minutos)
+   ollama pull llama3.2:1b
+   ```
+
+4. **Verificar la instalación**
+   ```bash
+   # Lista los modelos disponibles
+   ollama list
+   ```
 
 ## 🏗️ Arquitectura
 
