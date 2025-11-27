@@ -1,52 +1,66 @@
-# 🤖 AI driven API QA
+# 🤖 AI-driven API Test Generator
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Ollama](https://img.shields.io/badge/Ollama-LLM-orange?logo=openai&logoColor=white)](https://ollama.ai/)
-[![GitLab CI](https://img.shields.io/badge/GitLab-CI/CD-FC6D26?logo=gitlab&logoColor=white)](https://gitlab.com/)
+[![Java](https://img.shields.io/badge/Java-17+-007396?logo=java&logoColor=white)](https://www.java.com/)
+[![Gradle](https://img.shields.io/badge/Gradle-7.6+-02303A?logo=gradle&logoColor=white)](https://gradle.org/)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0-6BA539?logo=openapis&logoColor=white)](https://www.openapis.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**Automatiza el análisis de especificaciones API y genera código mediante IA (Ollama)**
-
-Este repositorio forma parte de un flujo automatizado entre tres repositorios que sincroniza cambios en especificaciones de API, ejecuta análisis con IA y genera artefactos automáticamente.
+**Generador automático de pruebas de API Java basado en especificaciones OpenAPI utilizando IA (Ollama)**
 
 ---
 
 ## 📋 Tabla de Contenidos
 
-- [Requisitos Previos](#-requisitos-previos)
+- [Requisitos](#-requisitos)
 - [Instalación](#-instalación)
-
-- [Arquitectura](#-arquitectura)
-- [¿Cuándo se ejecuta?](#-cuándo-se-ejecuta-este-sistema)
-- [Estructura del Repositorio](#-contenido-del-repositorio)
-- [Validación de OpenAPI](#-validación-de-openapi-en-pipeline-1)
-- [Requisitos](#-requisitos-técnicos)
-- [Instalación](#-instalación)
-- [Configuración](#-configuración)
 - [Uso](#-uso)
-- [Output](#-output-esperado)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Configuración](#-configuración)
+- [Salida](#-salida)
 - [Troubleshooting](#-troubleshooting)
-- [Roles](#-roles-del-flujo)
-- [Roadmap](#-roadmap-futuro)
 
 ---
 
-## 🔧 Requisitos Previos
+## 🔧 Requisitos
 
-Antes de comenzar, asegúrate de tener instalado:
+### Requisitos del sistema
+- Python 3.9+
+- Java 17+
+- Gradle 7.6+
+- Git
 
-- [Python 3.9+](https://www.python.org/downloads/)
-- [Git](https://git-scm.com/)
-- [Ollama](https://ollama.ai/) (sigue las instrucciones de instalación para tu sistema operativo)
+### Requisitos de Ollama
+- [Ollama](https://ollama.ai/) instalado y configurado
+- Modelo de lenguaje compatible (se recomienda `llama3.2:1b` o superior)
+- Mínimo 8GB de RAM para ejecutar el modelo básico
+- Conexión a Internet para la descarga inicial del modelo
 
-## 📥 Instalación de Ollama y Configuración del Modelo
+#### Especificaciones técnicas recomendadas:
+- CPU: 4+ núcleos
+- RAM: 16GB o más (dependiendo del tamaño del modelo)
+- Almacenamiento: 10GB de espacio libre (para el modelo y dependencias)
 
-1. **Instalar Ollama**
-   - Descarga e instala Ollama desde [ollama.ai](https://ollama.ai/)
-   - Sigue las instrucciones de instalación para tu sistema operativo
+#### Modelos soportados:
+- `llama3.2:1b` (recomendado para la mayoría de los casos de uso)
+- `llama3.2:7b` (para mayor precisión, requiere más recursos)
+- `llama3.2:13b` (máxima precisión, requiere recursos significativos)
 
-2. **Iniciar el servidor de Ollama**
+## 📥 Instalación
+
+1. **Clonar el repositorio**
+   ```bash
+   git clone [URL_DEL_REPOSITORIO]
+   cd ai-driven-api-qa
+   ```
+
+2. **Instalar dependencias de Python**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Iniciar el servidor de Ollama**
    ```bash
    # En una terminal, inicia el servidor de Ollama
    ollama serve
@@ -57,6 +71,90 @@ Antes de comenzar, asegúrate de tener instalado:
    # En otra terminal, descarga el modelo (puede tardar varios minutos)
    ollama pull llama3.2:1b
    ```
+
+## 🚀 Uso
+
+1. **Preparar la especificación OpenAPI**
+   - Coloca tu archivo de especificación OpenAPI (YAML o JSON) en la carpeta `spec/`
+   - Por defecto, el script buscará un archivo llamado `openapi.yaml`
+
+2. **Configurar el prompt**
+   - Edita el archivo `prompt/java_Prompt.txt` para personalizar las instrucciones de generación de código
+   - El archivo puede contener placeholders como `{{ REQS }}` y `{{ SPEC }}` que serán reemplazados automáticamente
+
+3. **Ejecutar el generador**
+   ```bash
+   python java_chat.py
+   ```
+
+4. **Resultados**
+   - Las pruebas generadas se guardarán en `output/ai_generated_tests.java`
+   - El script intentará limpiar automáticamente el código generado
+
+## 📁 Estructura del Proyecto
+
+```
+.
+├── spec/                 # Especificaciones OpenAPI
+│   └── openapi.yaml     # Archivo de especificación de la API
+├── prompt/              
+│   └── java_Prompt.txt  # Instrucciones para la generación de código
+├── output/              
+│   └── ai_generated_tests.java  # Pruebas generadas
+├── build.gradle         # Configuración de Gradle para el proyecto Java
+├── java_chat.py         # Script principal de generación
+└── requirements.txt     # Dependencias de Python
+```
+
+## ⚙️ Configuración
+
+Puedes modificar las siguientes variables en `java_chat.py`:
+
+- `MODEL`: Modelo de Ollama a utilizar (por defecto: 'llama3.2:1b')
+- `SPEC_DIRECTORY`: Directorio de las especificaciones
+- `SPEC_FILE_NAME`: Nombre del archivo de especificación
+- `OUTPUT_DIR`: Directorio de salida
+- `OUTPUT_FILE`: Nombre del archivo de salida
+- `PRINT_TO_CONSOLE`: Mostrar salida en consola (útil para depuración)
+
+## 📊 Salida
+
+El script genera un archivo Java con pruebas unitarias basadas en la especificación OpenAPI. Las pruebas utilizan:
+
+- JUnit 5
+- RestAssured para pruebas de API
+- Aserciones con AssertJ
+
+## 🐛 Troubleshooting
+
+### Error: No se puede conectar a Ollama
+- Asegúrate de que el servidor de Ollama esté en ejecución:
+  ```bash
+  ollama serve
+  ```
+
+### Error: Modelo no encontrado
+- Verifica que el modelo especificado esté instalado:
+  ```bash
+  ollama list
+  ```
+  Si no está listado, instálalo con:
+  ```bash
+  ollama pull [nombre_del_modelo]
+  ```
+
+### Error en la generación de código
+- Revisa que el archivo de especificación OpenAPI sea válido
+- Verifica que el archivo de prompt tenga el formato correcto
+- Intenta con un prompt más específico si el código generado no es el esperado
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+Desarrollado con ❤️ por [Tu Nombre]
 
 4. **Verificar la instalación**
    ```bash
@@ -531,7 +629,6 @@ npm install -g @stoplight/spectral-cli swagger-cli
 - [ ] Auto-resolve si el archivo generado no cambia contenido
 - [ ] Notificación en canal de google del resultado
 - [ ] LLM con memoria incremental
-- [ ] Validacion schema de la especificacion en el repositorio 1
 
 
 ---
