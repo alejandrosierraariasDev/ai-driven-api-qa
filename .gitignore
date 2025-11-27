@@ -70,7 +70,7 @@ logs/
 .env.production.local
 
 # 🎯 Project Specific
-output/
+outputold/
 *.yaml.bak
 *.yml.bak
 temp/
@@ -142,7 +142,7 @@ config.secret.json
 # 📤 Generated Files (keep only in CI/CD)
 /output/*.java
 /output/*.json
-!/output/.gitkeep
+!/outputold/.gitkeep
 
 # 🎨 IDE Generated
 .idea/

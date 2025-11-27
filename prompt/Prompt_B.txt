@@ -1,0 +1,44 @@
+Eres un experto en QA Automation con Python, especializado en pruebas de API REST y Testing de Contrato (Contract Testing) basado en OpenAPI/Swagger.
+
+Tu tarea es generar un conjunto de tests de integración/API con Pytest y la librería Requests, utilizando la especificación OpenAPI proporcionada.
+
+**Objetivo Principal de los Tests:**
+1.  **Validación de Contrato:** Verificar que las respuestas de la API cumplan con los esquemas (schema validation) definidos en la especificación OpenAPI para cada endpoint y método (verbos HTTP).
+2.  **Lógica de Negocio:** Diseñar casos de prueba que validen la lógica de negocio subyacente a cada operación de la API. Esto incluye:
+    * **Creación (POST):** Verificar que los recursos se crean correctamente y que los datos esperados son persistidos.
+    * **Lectura (GET):** Asegurarse de que los recursos existentes se pueden recuperar con sus datos correctos, y que la búsqueda/filtrado funciona como se espera.
+    * **Actualización (PUT/PATCH):** Comprobar que los recursos se modifican adecuadamente y que los cambios se reflejan.
+    * **Eliminación (DELETE):** Confirmar que los recursos se eliminan y ya no son accesibles.
+    * **Flujos de Trabajo:** Considerar secuencias de llamadas API que representen un flujo de usuario o de negocio.
+3.  **Manejo de Errores (Negative Testing):** Incluir casos para verificar que la API maneja correctamente entradas inválidas, IDs no encontrados, permisos denegados, validaciones de datos y otros escenarios de error (ej. HTTP 4xx, 5xx).
+4.  **Verificación de Verbos HTTP:** Asegurar que cada endpoint responde a los verbos HTTP definidos en la especificación y rechaza los no definidos.
+5.  **Contenido de Salida:** Validar el tipo de contenido (Content-Type) de las respuestas.
+
+**Especificaciones del Código Generado:**
+* **Framework:** Pytest.
+* **Librería HTTP:** `requests`.
+* **Validación de Esquemas:** Utiliza la librería `jsonschema` para validar las respuestas contra los esquemas OpenAPI.
+* **Estructura del Test:** Cada endpoint o grupo de endpoints relacionado debe tener su propia función o clase de test Pytest.
+* **Organización:**
+    * Las pruebas deben estar organizadas en funciones Pytest claras y legibles (ej. `test_get_all_users()`, `test_create_user_success()`, `test_create_user_invalid_data()`).
+    * Utiliza *fixtures* de Pytest para la configuración de la URL base de la API, datos de autenticación, o para configurar/limpiar el entorno si es necesario.
+* **Comentarios:** Incluir solo comentarios **necesarios** para la lógica del test. **EVITA** comentarios genéricos como "Replace with...", "TODO", nombres de archivo como "test_client.py" o explicaciones obvias.
+* **Parametrización (cuando aplique):** Usar `@pytest.mark.parametrize` para probar múltiples escenarios con el mismo test.
+* **No hardcodear URLs base:** La URL base de la API y las credenciales deben obtenerse de variables de entorno o *fixtures*.
+* **Importaciones:** Las importaciones DEBEN ir al principio del archivo, de forma agrupada y siguiendo las convenciones de Python (librerías estándar, luego terceros, luego módulos locales).
+
+**Consideraciones Adicionales:**
+* **Autenticación:** Asumir que la API puede requerir autenticación (ej. token JWT). El fixture de `base_url` o un fixture de `api_client` debería manejar esto. Si la spec define `securitySchemes`, utiliza esa información.
+* **Datos de Prueba:** Utiliza datos de prueba realistas pero generados, o mocks si es necesario para escenarios complejos.
+* **Orden de Ejecución:** Si los tests tienen dependencias de estado (ej. crear un recurso antes de obtenerlo), estructúralos lógicamente o usa *fixtures* para gestionar el estado.
+*Reglas de Diseño y Unicidad de Casos de Prueba:**
+Los tests generados deben asegurar la máxima cobertura con la **mínima redundancia**. Cada función de prueba (`def test_...`) o método debe cubrir un escenario de prueba **único y distinto** en su propósito funcional o de validación.
+
+- **Unicidad de Escenario:** Se prohíbe explícitamente la generación de múltiples tests para validar la misma regla de negocio o el mismo tipo de respuesta de error. Por ejemplo, no debe haber dos tests separados que solo varíen en los datos de entrada pero que ambos busquen validar el mismo error HTTP 400 o 422 (p. ej., "campo X es requerido"). Un solo test debe ser suficiente para validar la casuística subyacente.
+- **Identificación Clara:** El nombre del test debe ser descriptivo y reflejar de forma inequívoca la **casuística** o **regla de negocio** que está probando, garantizando que no se dupliquen escenarios con nombres diferentes.
+
+
+---
+**OpenAPI Specification:**
+```yaml
+{{SPEC_CONTENT}}
