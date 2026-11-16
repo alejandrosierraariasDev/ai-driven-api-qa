@@ -7,219 +7,183 @@
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0-6BA539?logo=openapis&logoColor=white)](https://www.openapis.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**Generador automático de pruebas de API Java basado en especificaciones OpenAPI utilizando IA (Ollama)**
+**Automatic Java API test generation from OpenAPI specifications, using a local LLM (Ollama).**
 
 ---
 
-## 📋 Tabla de Contenidos
+## 📋 Table of contents
 
-- [Requisitos](#-requisitos)
-- [Instalación](#-instalación)
-- [Uso](#-uso)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Configuración](#-configuración)
-- [Salida](#-salida)
+- [Requirements](#-requirements)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Project structure](#-project-structure)
+- [Configuration](#️-configuration)
+- [Output](#-output)
+- [CI/CD architecture](#️-cicd-architecture)
+- [OpenAPI validation in Pipeline 1](#-openapi-validation-in-pipeline-1)
 - [Troubleshooting](#-troubleshooting)
 
 ---
 
-## 🔧 Requisitos
+## 🔧 Requirements
 
-### Requisitos del sistema
+### System
 - Python 3.9+
 - Java 17+
 - Gradle 7.6+
 - Git
 
-### Requisitos de Ollama
-- [Ollama](https://ollama.ai/) instalado y configurado
-- Modelo de lenguaje compatible (se recomienda `llama3.2:1b` o superior)
-- Mínimo 8GB de RAM para ejecutar el modelo básico
-- Conexión a Internet para la descarga inicial del modelo
+### Ollama
+- [Ollama](https://ollama.ai/) installed and configured
+- A compatible language model (`llama3.2:1b` or larger recommended)
+- At least 8 GB of RAM to run the basic model
+- Internet access for the first model download
 
-#### Especificaciones técnicas recomendadas:
-- CPU: 4+ núcleos
-- RAM: 16GB o más (dependiendo del tamaño del modelo)
-- Almacenamiento: 10GB de espacio libre (para el modelo y dependencias)
+#### Recommended hardware
+- CPU: 4+ cores
+- RAM: 16 GB or more (depending on model size)
+- Storage: 10 GB free (model and dependencies)
 
-#### Modelos soportados:
-- `llama3.2:1b` (recomendado para la mayoría de los casos de uso)
-- `llama3.2:7b` (para mayor precisión, requiere más recursos)
-- `llama3.2:13b` (máxima precisión, requiere recursos significativos)
+#### Supported models
+- `llama3.2:1b` (recommended for most use cases)
+- `llama3.2:7b` (more accurate, needs more resources)
+- `llama3.2:13b` (most accurate, needs significant resources)
 
-## 📥 Instalación
+## 📥 Installation
 
-1. **Clonar el repositorio**
+1. **Clone the repository**
    ```bash
-   git clone [URL_DEL_REPOSITORIO]
+   git clone https://github.com/alejandrosierraariasDev/ai-driven-api-qa.git
    cd ai-driven-api-qa
    ```
 
-2. **Instalar dependencias de Python**
+2. **Install Python dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Iniciar el servidor de Ollama**
+3. **Start the Ollama server**
    ```bash
-   # En una terminal, inicia el servidor de Ollama
+   # In one terminal, start the Ollama server
    ollama serve
    ```
 
-3. **Descargar el modelo de lenguaje**
+4. **Download the language model**
    ```bash
-   # En otra terminal, descarga el modelo (puede tardar varios minutos)
+   # In another terminal, download the model (may take a few minutes)
    ollama pull llama3.2:1b
    ```
 
-## 🚀 Uso
+5. **Check the installation**
+   ```bash
+   # List the available models
+   ollama list
+   ```
 
-1. **Preparar la especificación OpenAPI**
-   - Coloca tu archivo de especificación OpenAPI (YAML o JSON) en la carpeta `spec/`
-   - Por defecto, el script buscará un archivo llamado `openapi.yaml`
+## 🚀 Usage
 
-2. **Configurar el prompt**
-   - Edita el archivo `prompt/java_Prompt.txt` para personalizar las instrucciones de generación de código
-   - El archivo puede contener placeholders como `{{ REQS }}` y `{{ SPEC }}` que serán reemplazados automáticamente
+1. **Prepare the OpenAPI specification**
+   - Put your OpenAPI specification (YAML or JSON) in the `spec/` folder.
+   - By default the script looks for a file called `openapi.yaml`.
 
-3. **Ejecutar el generador**
+2. **Configure the prompt**
+   - Edit `prompt/java_Prompt.txt` to customize the code-generation instructions.
+   - The file can contain placeholders such as `{{ REQS }}` and `{{ SPEC }}`, which are replaced automatically.
+
+3. **Run the generator**
    ```bash
    python java_chat.py
    ```
 
-4. **Resultados**
-   - Las pruebas generadas se guardarán en `output/ai_generated_tests.java`
-   - El script intentará limpiar automáticamente el código generado
+4. **Results**
+   - Generated tests are saved to `output/ai_generated_tests.java`.
+   - The script tries to clean up the generated code automatically.
 
-## 📁 Estructura del Proyecto
+## 📁 Project structure
 
 ```
 .
-├── spec/                 # Especificaciones OpenAPI
-│   └── openapi.yaml     # Archivo de especificación de la API
-├── prompt/              
-│   └── java_Prompt.txt  # Instrucciones para la generación de código
-├── output/              
-│   └── ai_generated_tests.java  # Pruebas generadas
-├── build.gradle         # Configuración de Gradle para el proyecto Java
-├── java_chat.py         # Script principal de generación
-└── requirements.txt     # Dependencias de Python
+├── spec/                 # OpenAPI specifications
+│   └── openapi.yaml      # API specification file
+├── prompt/
+│   └── java_Prompt.txt   # Code-generation instructions
+├── output/
+│   └── ai_generated_tests.java  # Generated tests
+├── build.gradle          # Gradle configuration for the Java project
+├── java_chat.py          # Main generation script
+└── requirements.txt      # Python dependencies
 ```
 
-## ⚙️ Configuración
+## ⚙️ Configuration
 
-Puedes modificar las siguientes variables en `java_chat.py`:
+You can change these variables in `java_chat.py`:
 
-- `MODEL`: Modelo de Ollama a utilizar (por defecto: 'llama3.2:1b')
-- `SPEC_DIRECTORY`: Directorio de las especificaciones
-- `SPEC_FILE_NAME`: Nombre del archivo de especificación
-- `OUTPUT_DIR`: Directorio de salida
-- `OUTPUT_FILE`: Nombre del archivo de salida
-- `PRINT_TO_CONSOLE`: Mostrar salida en consola (útil para depuración)
+- `MODEL`: Ollama model to use (default: `llama3.2:1b`)
+- `SPEC_DIRECTORY`: specifications folder
+- `SPEC_FILE_NAME`: specification file name
+- `OUTPUT_DIR`: output folder
+- `OUTPUT_FILE`: output file name
+- `PRINT_TO_CONSOLE`: print the output to the console (useful for debugging)
 
-## 📊 Salida
+## 📊 Output
 
-El script genera un archivo Java con pruebas unitarias basadas en la especificación OpenAPI. Las pruebas utilizan:
+The script produces a Java file with tests based on the OpenAPI specification, using:
 
 - JUnit 5
-- RestAssured para pruebas de API
-- Aserciones con AssertJ
-
-## 🐛 Troubleshooting
-
-### Error: No se puede conectar a Ollama
-- Asegúrate de que el servidor de Ollama esté en ejecución:
-  ```bash
-  ollama serve
-  ```
-
-### Error: Modelo no encontrado
-- Verifica que el modelo especificado esté instalado:
-  ```bash
-  ollama list
-  ```
-  Si no está listado, instálalo con:
-  ```bash
-  ollama pull [nombre_del_modelo]
-  ```
-
-### Error en la generación de código
-- Revisa que el archivo de especificación OpenAPI sea válido
-- Verifica que el archivo de prompt tenga el formato correcto
-- Intenta con un prompt más específico si el código generado no es el esperado
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+- RestAssured for API testing
+- AssertJ assertions
 
 ---
 
-Desarrollado con ❤️ por [Tu Nombre]
+## 🏗️ CI/CD architecture
 
-4. **Verificar la instalación**
-   ```bash
-   # Lista los modelos disponibles
-   ollama list
-   ```
-
-## 🏗️ Arquitectura
+The generator is designed to run as the middle step of a three-repository flow:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                         │
 │  Repo #1: api_spec                                                      │
-│  └─ spec/openapi.yaml (modificado en branch: dev)                       │
-│                                                                         │
+│  └─ spec/openapi.yaml (changed on branch: dev)                          │
 └────────────────────────┬────────────────────────────────────────────────┘
-                         │ Merge a dev
+                         │ Merge to dev
                          ⬇
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                         │
-│  Pipeline 1 (Repo #1) - VALIDACIÓN EXHAUSTIVA                           │
-│  ├─ ✅ validate_openapi (swagger-cli + Spectral)                        │
-│  │  ├─ Validación sintáctica                                            │
-│  │  └─ Validación de calidad (reglas custom)                            │
-│  │                                                                      │
-│  └─ 🚀 trigger_ai_pipeline (si validación OK)                           │
-│                                                                         │
+│  Pipeline 1 (Repo #1) - THOROUGH VALIDATION                             │
+│  ├─ ✅ validate_openapi (swagger-cli + Spectral)                         │
+│  │  ├─ Syntax validation                                                │
+│  │  └─ Quality validation (custom rules)                                │
+│  └─ 🚀 trigger_ai_pipeline (only if validation passes)                  │
 └────────────────────────┬────────────────────────────────────────────────┘
-                         │ Trigger (solo si pasa validación)
+                         │ Trigger (only if validation passes)
                          ⬇
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                         │
-│  Repo #2: IA_Code (Este repositorio)                                    │
-│  ├─ main.py (ejecuta Ollama)                                            │
-│  ├─ spec/openapi.yaml (input validado)                                  │
-│  ├─ prompt/prompt.txt (instrucciones IA)                                │
-│  └─ output/chat_output.py (artefacto generado)                          │
-│                                                                         │
+│  Repo #2: AI code generation (this repository)                          │
+│  ├─ main.py (runs Ollama)                                               │
+│  ├─ spec/openapi.yaml (validated input)                                 │
+│  ├─ prompt/prompt.txt (AI instructions)                                 │
+│  └─ output/chat_output.py (generated artifact)                          │
 └────────────────────────┬────────────────────────────────────────────────┘
                          │ Pipeline 2
                          ⬇
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                         │
-│  Repo #3: QADev_code                                                    │
-│  └─ Recibe MR automática con output generado                            │
+│  Repo #3: QA test code                                                  │
+│  └─ Receives an automatic merge request with the generated output       │
 │     Branch: feature-ai-update-yyyymmddHHMM → dev                        │
-│                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
----
+### 🚀 When does it run?
 
-## 🚀 ¿Cuándo se ejecuta este sistema?
+| Event | Result |
+|-------|--------|
+| `spec/openapi.yaml` is changed and merged in **api_spec** → branch **dev** | **Pipeline 1** starts |
+| Pipeline 1: **validation** (swagger-cli + Spectral) | ✅ Passes → continues / ❌ Fails → stops |
+| Pipeline 1 notifies the AI repository (only if validation passed) | The **AI** runs and produces the output |
+| Pipeline 2 (this repository) finishes | An **automatic merge request** is opened in the QA repository → target: **dev** |
 
-| Evento | Resultado |
-|--------|-----------|
-| Se modifica y mergea `spec/openapi.yaml` en **api_spec** → branch **dev** | Se lanza **Pipeline 1** |
-| Pipeline 1: **Validación** (swagger-cli + Spectral) | ✅ Pasa → Continúa / ❌ Falla → Se detiene |
-| Pipeline 1 notifica a **IA_Code** (solo si validación OK) | Se ejecuta **IA** y se genera output |
-| Pipeline 2 (en este repo) termina el análisis | Se crea **Merge Request automática** en QADev_code → destino: **dev** |
-
-### 🔄 Flujo Detallado de Validación
+### 🔄 Validation flow
 
 ```
-Merge openapi.yaml a dev
+Merge openapi.yaml to dev
         ⬇
    Pipeline 1
         ⬇
@@ -227,7 +191,7 @@ Merge openapi.yaml a dev
         ⬇
    ┌─────────────────────────────────┐
    │ 1. swagger-cli validate         │
-   │    (Sintaxis YAML + estructura) │
+   │    (YAML syntax + structure)    │
    └────────────┬────────────────────┘
                 ⬇
             ✅ OK?
@@ -236,409 +200,213 @@ Merge openapi.yaml a dev
         /            \
        ⬇              ⬇
    ┌──────────┐   STOP
-   │ Spectral │   (Blocking)
+   │ Spectral │   (blocking)
    │ lint     │
    └────┬─────┘
         ⬇
-   ✅ Errores?
+   Errors?
    /      \
   ❌      ✅
  /         \
 ⬇           ⬇
 STOP      Warnings?
-(Blocking) /      \
+(blocking) /      \
          ❌       ✅
         /           \
        ⬇             ⬇
       STOP        CONTINUE
-    (Blocking)    (Notify)
+    (blocking)    (notify)
                    ⬇
             trigger_ai_pipeline
                    ⬇
-              Repo #2 (IA_Code)
+              Repo #2 (AI)
 ```
+
+### 🧩 CI/CD files
+
+```
+├── main.py                 # Main script
+├── .gitlab-ci.yml          # CI/CD pipeline
+├── spec/openapi.yaml       # Input: API specification (from Repo #1)
+├── prompt/prompt.txt       # AI instructions (template)
+├── output/chat_output.py   # Output: AI-generated artifact
+└── gitlab/
+    ├── 1.gitlab-ci.yaml    # Repo #1 pipeline (validation + trigger)
+    └── 2.gitlab-ci.yaml    # Repo #2 pipeline (this repository)
+```
+
+| File | Description |
+|------|-------------|
+| **main.py** | Orchestrates the flow: reads the spec, runs Ollama, saves the output |
+| **spec/openapi.yaml** | OpenAPI specification received from Repo #1 |
+| **prompt/prompt.txt** | Instruction template for the AI (defines what to generate) |
+| **output/chat_output.py** | Automatically generated artifact (sent to Repo #3) |
+| **.gitlab-ci.yml** | Pipeline that runs main.py and opens the MR in Repo #3 |
 
 ---
 
-## 🧩 Contenido del Repositorio
+## ✅ OpenAPI validation in Pipeline 1
 
-```
-IA_Code/
-├── 📄 README.md                    # Este archivo
-├── 📄 requirements.txt             # Dependencias Python
-├── 📄 main.py                      # Script principal de ejecución
-├── 📄 .gitlab-ci.yml               # Pipeline CI/CD
-│
-├── 📁 spec/
-│   └── openapi.yaml                # Input: Especificación API (desde Repo #1)
-│
-├── 📁 prompt/
-│   └── prompt.txt                  # Instrucciones para la IA (plantilla)
-│
-├── 📁 output/
-│   └── chat_output.py              # Output: Artefacto generado por IA
-│
-└── 📁 gitlab/
-    ├── 1.gitlab-ci.yaml            # Pipeline Repo #1 (validación + trigger)
-    └── 2.gitlab-ci.yaml            # Pipeline Repo #2 (este repo)
-```
+Before the AI runs, Pipeline 1 validates the OpenAPI specification thoroughly, so it meets technical and quality standards.
 
-### 📝 Descripción de Archivos Clave
+### 1️⃣ Syntax validation with swagger-cli
 
-| Archivo | Descripción |
-|---------|-------------|
-| **main.py** | Script principal que orquesta todo el flujo: lee spec, ejecuta Ollama, guarda output |
-| **spec/openapi.yaml** | Especificación OpenAPI que recibe desde Repo #1 |
-| **prompt/prompt.txt** | Plantilla de instrucciones para la IA (define qué generar) |
-| **output/chat_output.py** | Artefacto generado automáticamente (se envía a Repo #3) |
-| **.gitlab-ci.yml** | Pipeline que ejecuta main.py y crea MR en Repo #3 | |
+**Purpose:** check that the OpenAPI file is well formed and follows the official specification.
 
----
+**Checks:**
+- ✔ The YAML is well formed
+- ✔ Required keys (`openapi`, `paths`, `components`, etc.) exist
+- ✔ References (`$ref`) are defined correctly
+- ✔ There are no orphaned or badly structured elements
 
-## ✅ Validación de OpenAPI en Pipeline 1
+**Behavior:** ⛔ if it fails, the pipeline stops immediately (blocking).
 
-Antes de ejecutar la IA, el Pipeline 1 (en Repo #1) realiza validaciones exhaustivas de la especificación OpenAPI para asegurar que cumple con estándares técnicos y de calidad.
+### 2️⃣ Quality validation with Spectral
 
-### 📌 Etapas de Validación
+**Purpose:** analyze the semantic content of the OpenAPI file against internal standard rules.
 
-El job `validate_openapi` ejecuta dos niveles de validación:
-
-#### 1️⃣ Validación Sintáctica con swagger-cli
-
-**Propósito**: Verificar que el archivo OpenAPI está bien formado y cumple con las especificaciones oficiales.
-
-**Qué valida**:
-- ✔ Que el YAML está correctamente formado
-- ✔ Que claves obligatorias (`openapi`, `paths`, `components`, etc.) existen
-- ✔ Que las referencias (`$ref`) están correctamente definidas
-- ✔ Que no hay elementos huérfanos o mal estructurados
-
-**Comportamiento**: ⛔ Si falla, la pipeline se detiene inmediatamente (blocking)
-
-#### 2️⃣ Validación de Calidad con Spectral
-
-**Propósito**: Analizar el contenido semántico del archivo OpenAPI según reglas de estándar interno.
-
-**Casos de uso**:
-
-| Caso | Acción |
+| Case | Action |
 |------|--------|
-| Existe `.spectral.yaml` | Se usa el archivo existente |
-| No existe | Se genera automáticamente con reglas preconfiguradas |
+| `.spectral.yaml` exists | The existing file is used |
+| It does not exist | One is generated automatically with preconfigured rules |
 
-### 📄 Reglas Aplicadas por Spectral
+### 📄 Spectral rules
 
-Estas reglas definen estándares de escritura y consistencia de la API:
-
-| Regla | Tipo | Qué valida | Severidad |
+| Rule | Type | What it checks | Severity |
 |-------|------|-----------|----------|
-| **operation-description** | Custom | Cada endpoint debe tener una descripción clara | ❌ Error |
-| **schema-must-have-type** | Custom | Todas las propiedades en schemas deben declarar un tipo (`type`) | ❌ Error |
-| **required-fields** | Custom | Si existe `properties` en un schema, debe declararse un array `required` | ⚠️ Warning |
-| **example-required** | Custom | Cada propiedad debe incluir un valor ejemplo (`example`) | ⚠️ Warning |
+| **operation-description** | Custom | Every endpoint has a clear description | ❌ Error |
+| **schema-must-have-type** | Custom | Every schema property declares a `type` | ❌ Error |
+| **required-fields** | Custom | If a schema has `properties`, it declares a `required` array | ⚠️ Warning |
+| **example-required** | Custom | Every property includes an `example` value | ⚠️ Warning |
 
-### 🚦 Criterios de Fallo del Pipeline
+### 🚦 Pipeline failure criteria
 
-| Condición | Resultado |
+| Condition | Result |
 |-----------|----------|
-| Validación sintáctica falla | ❌ Pipeline detenida (blocking) |
-| Spectral detecta errores (`severity = error`) | ❌ Pipeline detenida (blocking) |
-| Spectral detecta solo warnings | ⚠️ Pipeline continúa, pero se notifica |
+| Syntax validation fails | ❌ Pipeline stopped (blocking) |
+| Spectral finds errors (`severity = error`) | ❌ Pipeline stopped (blocking) |
+| Spectral finds only warnings | ⚠️ Pipeline continues, with a notification |
 
-Esto permite mejorar progresivamente la documentación sin bloquear el desarrollo por detalles menores.
+This lets the team improve documentation step by step without blocking development on minor details.
 
-### 🧪 Ejemplo de Salida Esperada
+### 🧪 Example output
 
 ```
-📌 Validando sintaxis OpenAPI...
+📌 Validating OpenAPI syntax...
 ✓ No errors found!
 
-🔍 Validando calidad OpenAPI con Spectral...
+🔍 Validating OpenAPI quality with Spectral...
 ❗ ERROR: paths./users.post description is missing
 ⚠ WARNING: components.schemas.User.required should be defined
 
 ❌ Violations found. Fix before merge.
 ```
 
-### 🎯 Objetivo de esta Validación
-
-Asegurar que:
-- ✔ La API mantiene un estándar uniforme
-- ✔ La documentación es clara, robusta y útil para consumidores
-- ✔ Se detectan inconsistencias antes de que lleguen al repositorio principal
-- ✔ Las reglas pueden evolucionar con el estándar interno del equipo
-
 ---
 
-## 🛠️ Requisitos Técnicos
+## 🛠️ CI/CD requirements
 
-| Dependencia | Requerido | Notas |
+| Dependency | Required | Notes |
 |-------------|----------|-------|
-| **Python** | 3.9+ | ✔ Obligatorio |
-| **Ollama** | Instalado en runner | ✔ Obligatorio |
-| **Modelo LLM** | llama3.2:1b | ✔ Debe estar descargado |
-| **Git** | Instalado en runner | ✔ Obligatorio |
-| **Node.js** | 18+ (en runner Pipeline 1) | ✔ Para Spectral y swagger-cli |
-| **swagger-cli** | NPM package | ✔ Validación sintáctica |
-| **Spectral** | NPM package | ✔ Validación de calidad |
-| **Runner Linux** | SSH/Git accesible | ✔ Obligatorio |
-| **GITLAB_TOKEN** | Variable CI/CD | ✔ Obligatorio |
+| **Python** | 3.9+ | ✔ Required |
+| **Ollama** | Installed on the runner | ✔ Required |
+| **LLM model** | llama3.2:1b | ✔ Must be downloaded |
+| **Git** | Installed on the runner | ✔ Required |
+| **Node.js** | 18+ (Pipeline 1 runner) | ✔ For Spectral and swagger-cli |
+| **swagger-cli** | NPM package | ✔ Syntax validation |
+| **Spectral** | NPM package | ✔ Quality validation |
+| **Linux runner** | SSH/Git access | ✔ Required |
+| **GITLAB_TOKEN** | CI/CD variable | ✔ Required |
 
----
+### Environment variables (GitLab CI/CD)
 
-## 📥 Instalación
+Set them in **Settings → CI/CD → Variables**:
 
-### 1. Clonar el repositorio
-
-```bash
-git clone https://gitlab.com/sngular-solutions/qe/IA_Code.git
-cd IA_Code
-```
-
-### 2. Crear entorno virtual
-
-```bash
-python3 -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
-```
-
-### 3. Instalar dependencias
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Verificar Ollama
-
-```bash
-# Verificar que Ollama está corriendo
-ollama list
-
-# Si no está corriendo, iniciar:
-ollama serve
-
-# Descargar modelo (si no está disponible):
-ollama pull llama3.2:1b
-```
-
----
-
-## ⚙️ Configuración
-
-### Variables de Entorno (GitLab CI/CD)
-
-Configura estas variables en **Settings → CI/CD → Variables** de tu proyecto GitLab:
-
-| Variable | Obligatoria | Descripción |
+| Variable | Required | Description |
 |----------|-------------|-------------|
-| **GITLAB_TOKEN** | ✅ | Token con permisos: `api`, `write_repository`, `write_merge_requests` |
-| **OLLAMA_MODEL** | ❌ | Modelo a usar (default: `llama3.2:1b`) |
+| **GITLAB_TOKEN** | ✅ | Token with `api`, `write_repository` and `write_merge_requests` scopes |
+| **OLLAMA_MODEL** | ❌ | Model to use (default: `llama3.2:1b`) |
 
-### Crear Token en GitLab
+To create the token, go to **Settings → Access Tokens**, give it the three scopes above and add it as the `GITLAB_TOKEN` CI/CD variable.
 
-1. Ve a **Settings → Access Tokens**
-2. Crea un token con permisos:
-   - ✅ `api`
-   - ✅ `write_repository`
-   - ✅ `write_merge_requests`
-3. Copia el token y agrégalo como variable `GITLAB_TOKEN` en CI/CD
-
-### Configurar Runner
-
-El runner debe tener:
-- Python 3.9+
-- Ollama instalado
-- Node.js 18+ (para Pipeline 1)
-- Acceso a internet para clonar repositorios
-
-### Instalar Herramientas de Validación (Pipeline 1)
-
-En el runner de Pipeline 1, instalar:
+On the Pipeline 1 runner, install the validation tools:
 
 ```bash
-# Instalar swagger-cli y Spectral
 npm install -g @stoplight/spectral-cli swagger-cli
-
-# Verificar instalación
 spectral --version
 swagger-cli --version
 ```
 
----
+### Automatic merge request
 
-## 🚀 Uso
-
-### Ejecución Manual (Desarrollo)
-
-```bash
-# Asegúrate de que Ollama está corriendo
-ollama serve &
-
-# Ejecutar el script
-python3 main.py
-```
-
-### Ejecución Automática (CI/CD)
-
-El pipeline se ejecuta automáticamente cuando:
-1. Se modifica `spec/openapi.yaml` en **api_spec** (Repo #1)
-2. Se mergea a la rama **dev**
-3. Pipeline 1 dispara Pipeline 2 (este repo)
-4. Se ejecuta `main.py` automáticamente
-5. Se crea MR en **QADev_code** (Repo #3)
-
----
-
-## 📄 Output Esperado
-
-### Archivo Generado
-
-```
-output/chat_output.py
-```
-
-Este archivo contiene el código/artefacto generado por la IA basándose en:
-- **Input**: `spec/openapi.yaml` (especificación API)
-- **Instrucciones**: `prompt/prompt.txt` (qué generar)
-- **Modelo**: `llama3.2:1b` (Ollama)
-
-### Ejemplo de Salida en Consola
-
-```
-✔ Cargado spec/openapi.yaml
-✔ Cargado prompt/prompt.txt
-🚀 Ejecutando IA...
-[Streaming de respuesta del modelo...]
-💾 Guardado en: output/chat_output.py
-🏁 Generación completada. Pipeline continuará con push y MR.
-```
-
----
-
-## 🔁 Merge Request Generada Automáticamente
-
-La MR creada en **QADev_code** seguirá este patrón:
-
-| Parámetro | Valor |
+| Parameter | Value |
 |-----------|-------|
-| **Branch origen** | `feature-ai-update-yyyymmddHHMM` |
-| **Branch destino** | `dev` |
-| **Título** | `🤖 AI Generated Update from API Spec` |
-| **Descripción** | Automática (generada por pipeline) |
-
-**Ejemplo:**
-```
-feature-ai-update-202503122048 → dev
-```
+| **Source branch** | `feature-ai-update-yyyymmddHHMM` |
+| **Target branch** | `dev` |
+| **Title** | `🤖 AI Generated Update from API Spec` |
+| **Description** | Generated by the pipeline |
 
 ---
 
-## 🚨 Troubleshooting
+## 🐛 Troubleshooting
 
-### ❌ Pipeline falla con error `ollama: command not found`
+**Cannot connect to Ollama.** Make sure the server is running: `ollama serve`.
 
-**Causa**: Runner no tiene Ollama instalado
+**Model not found.** Check it is installed with `ollama list`; if not, run `ollama pull <model_name>`.
 
-**Solución**:
+**`ollama: command not found` in the pipeline.** The runner has no Ollama:
 ```bash
-# En el runner
 curl https://ollama.ai/install.sh | sh
 ollama pull llama3.2:1b
 ```
 
-### ❌ MR no se crea
+**The MR is not created.** The token lacks scopes: check `api`, `write_repository` and `write_merge_requests`, and regenerate it if needed.
 
-**Causa**: Token sin permisos suficientes
-
-**Solución**:
-1. Verifica que `GITLAB_TOKEN` tiene permisos: `api`, `write_repository`, `write_merge_requests`
-2. Regenera el token si es necesario
-
-### ❌ Output vacío
-
-**Causa**: OpenAPI mal formado o prompt no encontrado
-
-**Solución**:
+**Empty output.** The OpenAPI file is malformed or the prompt is missing:
 ```bash
-# Validar que los archivos existen
-ls -la spec/openapi.yaml
-ls -la prompt/prompt.txt
-
-# Validar sintaxis YAML
+ls -la spec/openapi.yaml prompt/prompt.txt
 python3 -c "import yaml; yaml.safe_load(open('spec/openapi.yaml'))"
 ```
 
-### ❌ Ollama no responde
-
-**Causa**: Servicio Ollama no está corriendo
-
-**Solución**:
+**Git permission errors.** Use HTTPS with the token instead of SSH:
 ```bash
-# Iniciar Ollama
-ollama serve
-
-# En otra terminal, verificar
-ollama list
-```
-
-### ❌ Error de permisos en Git
-
-**Causa**: Token de GitLab sin acceso SSH
-
-**Solución**:
-```bash
-# Usar HTTPS en lugar de SSH
 git config --global url."https://oauth2:${GITLAB_TOKEN}@gitlab.com/".insteadOf "https://gitlab.com/"
 ```
 
-### ❌ Pipeline 1 falla: `swagger-cli: command not found`
+**`swagger-cli: command not found` in Pipeline 1.** Install Node.js and run `npm install -g @stoplight/spectral-cli swagger-cli` on the runner.
 
-**Causa**: Node.js o swagger-cli no instalado en runner
+**Spectral reports errors on a valid OpenAPI.** The `.spectral.yaml` rules are too strict: adjust them to the team's standards, or change severities from `error` to `warn`.
 
-**Solución**:
-```bash
-# En el runner de Pipeline 1
-npm install -g @stoplight/spectral-cli swagger-cli
-```
-
-### ❌ Spectral reporta errores en OpenAPI válido
-
-**Causa**: Archivo `.spectral.yaml` con reglas demasiado estrictas
-
-**Solución**:
-1. Revisa el archivo `.spectral.yaml` en Repo #1
-2. Ajusta las reglas según los estándares del equipo
-3. Cambia severidades de `error` a `warn` si es necesario
+**Code generation is poor.** Check the OpenAPI file is valid, the prompt file is well formatted, and try a more specific prompt.
 
 ---
 
-## 👥 Roles del Flujo
+## 👥 Roles
 
-| Rol                | Responsabilidad |
-|--------------------|-----------------|
-| **Equipo Backend** | Mantiene `spec/openapi.yaml` en Repo #1 |
-| **Equipo QA**      | Mantiene lógica del `prompt.txt` y artefactos generados |
-| **DevOps**         | Mantiene CI/CD, tokens, runner y permisos |
-| **Equipo QA**      | Revisa y aprueba la MR generada automáticamente |
+| Role | Responsibility |
+|------|----------------|
+| **Backend team** | Maintains `spec/openapi.yaml` in Repo #1 |
+| **QA team** | Maintains the `prompt.txt` logic and generated artifacts, and reviews and approves the generated MR |
+| **DevOps** | Maintains CI/CD, tokens, runner and permissions |
 
----
+## 📌 Roadmap
 
-## 📌 Roadmap Futuro
+- [ ] Validate the output automatically before opening the MR
+- [ ] Auto-resolve when the generated file does not change
+- [ ] Post the result to a team chat channel
+- [ ] LLM with incremental memory
 
-- [ ] Validación automática del output antes de MR
-- [ ] Auto-resolve si el archivo generado no cambia contenido
-- [ ] Notificación en canal de google del resultado
-- [ ] LLM con memoria incremental
+## 🧠 Summary
 
+✔ **Automates** the API → AI → code cycle
+✔ **Removes** repetitive manual work
+✔ **Keeps** consistency and versioning
+✔ **Scales** to new languages or rules
 
----
+## 📄 License
 
-## 🧠 Resumen
-
-✔ **Automatiza** el ciclo API → IA → Código  
-✔ **Elimina** trabajo manual repetitivo  
-✔ **Mantiene** consistencia y versionado  
-✔ **Escalable** para nuevos lenguajes o reglas  
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
+Built by [Alejandro Sierra](https://alejandrosierra.dev/)
